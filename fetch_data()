@@ -1,0 +1,13 @@
+def fetch_data():
+    """Fetches country and capital data from the API and stores it globally."""
+    global global_data
+    url = "https://countriesnow.space/api/v0.1/countries/capital"
+    response = requests.get(url)
+    if response.status_code == 200: # code 200 the response worked fine
+        
+"""takes the response object from json to a dictionary or list //response.json()"""
+"""tries to retrieve the value associated with the key "data" in the dictionary."""
+"""If it doesn't exist, it returns an empty list ([]) as a fallback. // .get("data",[])"""
+        global_data = response.json().get("data", [])  # Extract relevant data from JSON response
+    else:
+        print("Failed to fetch data") #the first 11tries:)
