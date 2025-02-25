@@ -1,6 +1,7 @@
 """The WikiSaver Main Module."""
 import random
 from geopy import distance
+import wikipedia
 from city_info import CityInfo
 
 
@@ -13,8 +14,13 @@ def get_travel_location_coordinates(city_name, locations: list):
     city_dict = dict(x for x in locations if x[0] == city_name)
     return city_dict[city_name]
 
+def get_wikipedia_page_text(location_name: str):
+    """Function to get the content from the wikipedia page."""
+    city_name = location_name.split(",")[0].strip()
+    wiki_page =  wikipedia.page(city_name, auto_suggest=False)
+    return wiki_page.content
 
-def get_wikipedia_links(city_name, locations: list) -> list:
+def get_wikipedia_links(location_name, locations: list) -> list:
     """To do. Function needs to be implemented. Now just a fake functionality,
     Here Needs to query Wiki API to get a city list from wiki page.
     To do. Function Features:
@@ -22,6 +28,9 @@ def get_wikipedia_links(city_name, locations: list) -> list:
     2. Search all the cities on the wiki page.
     3. Create a list like ["Berlin, Germany", "Tokyo, Japan", "New York City, USA"]
      """
+
+    text = get_wikipedia_page_text(location_name)
+
     random_locations = random.sample(locations, 10)
     # ["Berlin, Germany","Tokyo, Japan","New York City, USA"]
     return [x[0] for x in random_locations]
