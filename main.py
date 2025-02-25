@@ -1,5 +1,7 @@
 """The WikiSaver Main Module."""
 import random
+import re
+
 from geopy import distance
 from city_locations import CityLocations
 
@@ -31,12 +33,42 @@ def get_wikipedia_links(city_name) -> list:
     return [x[0] for x in random_locations]
 
 
+def get_capitals_from_wikipedia_page(wikipedia_page):
+    """finds capitals on the wikipedia page and returns them in a list together with their country"""
+    locations = CityLocations.locations
+    # ["Berlin, Germany","Tokyo, Japan","New York City, USA"]
+    capitals_countries_list = [capital_country_pair[0] for capital_country_pair in locations]
+
+    capitals_list = [capital_country_pair.split(",")[0] for capital_country_pair in capitals_countries_list]
+    found_capitals_list = []
+    #replacing unwanted characters
+    wikipedia_page = re.sub("[<>,}.;/{=!?']", " ", wikipedia_page)
+    #appending found capitals to our list if they are surrounded by whitespace
+    found_capitals_list = [capital for capital in capitals_list if re.search('(^|\s)' + capital + '($|\s)', wikipedia_page)]
+
+    found_capitals_cities_list = [
+        capital_country
+        for capital_country in capitals_countries_list
+        if capital_country.split(",")[0] in set(found_capitals_list)]
+
+    #loop through capitals list and for every capital check whether it is in the capital_country_pair of our capitals_countries_list
+    #found_capitals_cities_list = []
+    #for capital in found_capitals_list:
+    #    for capital_country in capitals_countries_list:
+    #        if capital in capital_country:
+    #            found_capitals_cities_list.append(capital_country)
+
+    return found_capitals_cities_list
+
+
+
+
 def calculate_distance(coord1, coord2) -> float:
     """
-    Function to Calculate diastance.
+    Function to Calculate distance.
     :param coord1: The place Latitude.
-    :param coord2: The place Longitude.
-    :return: Distace in KM.
+    :param coord2: The place Longitude
+    :return: Distance in KM.
     """
     dist = distance.geodesic(coord1, coord2).km
     return int(dist)
@@ -54,6 +86,7 @@ def get_openai_travel_advice(location, target):
 
 
 def start_game():
+    print(get_wikipedia_links("Tokyo"))
     """Game Loop Method."""
     print("\nWelcome to WikiSaver")
     #Get Random Start and End Locations.
@@ -146,5 +179,10 @@ def start_game():
             break
 
 
+def main():
+    print(get_capitals_from_wikipedia_page("Hallo23<<Tokyo//, Berlin"))
+
+
 if __name__ == "__main__":
-    start_game()
+    #start_game()
+    main()
