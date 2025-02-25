@@ -1,3 +1,4 @@
+"""The WikiSaver Main Module."""
 import random
 from geopy import distance
 from city_locations import CityLocations
@@ -78,12 +79,12 @@ def start_game():
             budget = travel_cost * 5
             initial_budget = budget
 
-        print(f"\n******************************************")
+        print("\n******************************************")
         print(f"Current Location: {current_location}")
         print(f"Target Destination: {target_location}")
         print(f"Distance to Target: {distance_to_target} km")
         print(f"Budget Remaining: ${budget}")
-        print(f"******************************************")
+        print("******************************************")
         links = get_wikipedia_links(current_location)
         # Block to get the User Choice.
         while True:

@@ -2,7 +2,7 @@
 
 
 class CityLocations:
-    """Class containing sample city locations"""
+    """Class containing sample city locations."""
     #https://download.geonames.org/export/dump/
     locations = [
         ("Berlin, Germany", (52.5200, 13.4050)),
