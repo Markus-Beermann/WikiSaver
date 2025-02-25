@@ -16,9 +16,14 @@ def get_travel_location_coordinates(city_name):
     return city_dict[city_name]
 
 
-def get_wikipedia_links(city_name):
+def get_wikipedia_links(city_name) -> list:
     """To do. Function needs to be implemented. Now just a fake functionality,
-    Here Needs to query Wiki API to get a city list from wiki page."""
+    Here Needs to query Wiki API to get a city list from wiki page.
+    To do. Function Features:
+    1. Query wiki API to get the page with city_name.
+    2. Search all the cities on the wiki page.
+    3. Create a list like ["Berlin, Germany", "Tokyo, Japan", "New York City, USA"]
+     """
 
     locations = CityLocations.locations
     random_locations = random.sample(locations, 10)
@@ -44,12 +49,14 @@ def calculate_cost(dist):
 
 
 def get_openai_travel_advice(location, target):
+    """How we can use openAI for wikiSaver???. Ideas"""
     pass
 
 
 def start_game():
     """Game Loop Method."""
     print("\nWelcome to WikiSaver")
+    #Get Random Start and End Locations.
     start_location, start_cords = get_random_travel_location()
     target_location, target_cords = get_random_travel_location()
 
@@ -57,20 +64,26 @@ def start_game():
     while start_location == target_location:
         target_location, target_cords = get_random_travel_location()
 
+
     print(f"Starting Location: {start_location}")
     print(f"Target Destination: {target_location}")
     print("Travel wisely within budget!")
 
+    #Initialize Budget, Locations and steps
     current_location = start_location
     current_cords = start_cords
     steps = 0
 
     budget = None
     initial_budget = None
-    while True:
 
 
+
+    while True:#current_location !=target_location
+
+        #Calculate distance to target
         distance_to_target = calculate_distance(current_cords, target_cords)
+        #Calculate travel cost
         travel_cost = calculate_cost(distance_to_target)
 
         # setting budget = calculated travel_cost
