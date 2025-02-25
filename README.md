@@ -4,7 +4,7 @@
 By Hackathon Team—1
 
 ## Overview
-This project description....
+This project description…
 
 
 ## Installation
@@ -21,5 +21,5 @@ git clone https://github.com/AteetVatan/WikiSaver.git
    ```
 
 ## Dependencies
-- `geopy` - Used for geolocation and distance calculations.
+- `geopy` - For distance calculations.
 
