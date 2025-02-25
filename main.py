@@ -18,7 +18,7 @@ def get_travel_location_coordinates(city_name):
     return city_dict[city_name]
 
 
-def get_wikipedia_links(city_name) -> list:
+def get_wikipedia_page(city_name):
     """To do. Function needs to be implemented. Now just a fake functionality,
     Here Needs to query Wiki API to get a city list from wiki page.
     To do. Function Features:
@@ -26,11 +26,9 @@ def get_wikipedia_links(city_name) -> list:
     2. Search all the cities on the wiki page.
     3. Create a list like ["Berlin, Germany", "Tokyo, Japan", "New York City, USA"]
      """
+    wikipedia_page = "Hallo23<<Tokyo//, Seoul##,<Vienna> Berlin}-!'Copenhagen Beijing?###"
+    return wikipedia_page
 
-    locations = CityLocations.locations
-    random_locations = random.sample(locations, 10)
-    # ["Berlin, Germany","Tokyo, Japan","New York City, USA"]
-    return [x[0] for x in random_locations]
 
 
 def get_capitals_from_wikipedia_page(wikipedia_page):
@@ -60,6 +58,9 @@ def get_capitals_from_wikipedia_page(wikipedia_page):
 
     return found_capitals_cities_list
 
+    #lower case isn't checked. everything to lowercase?
+    #not all special characters are checked, e. g. "-" and "#" are left unchecked
+
 
 
 
@@ -86,7 +87,6 @@ def get_openai_travel_advice(location, target):
 
 
 def start_game():
-    print(get_wikipedia_links("Tokyo"))
     """Game Loop Method."""
     print("\nWelcome to WikiSaver")
     #Get Random Start and End Locations.
@@ -131,7 +131,7 @@ def start_game():
         print(f"Distance to Target: {distance_to_target} km")
         print(f"Budget Remaining: ${budget}")
         print("******************************************")
-        links = get_wikipedia_links(current_location)
+        links = get_capitals_from_wikipedia_page(get_wikipedia_page(current_location))
         # Block to get the User Choice.
         while True:
             try:
@@ -140,7 +140,7 @@ def start_game():
                     print(f"{i}. {link}")
                 choice = input("Enter choice or [empty text for more choices / 0 to quit.] ").strip()
                 if choice == "":
-                    links = get_wikipedia_links(current_location)
+                    links = get_capitals_from_wikipedia_page(get_wikipedia_page(current_location))
                     continue  # empty text for more choices
                 if choice == "0":
                     break  # 0 to quit
@@ -179,10 +179,7 @@ def start_game():
             break
 
 
-def main():
-    print(get_capitals_from_wikipedia_page("Hallo23<<Tokyo//, Berlin"))
 
 
 if __name__ == "__main__":
-    #start_game()
-    main()
+    start_game()
