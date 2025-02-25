@@ -1,6 +1,7 @@
 # WikiSaver
 
 # Hackathon Project
+By Hackathon Team—1
 
 ## Overview
 This project description....
@@ -16,7 +17,7 @@ git clone https://github.com/AteetVatan/WikiSaver.git
    ```
 3. Run the project:
    ```bash
-   python main.py
+   python3 main.py
    ```
 
 ## Dependencies
