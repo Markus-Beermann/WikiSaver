@@ -3,6 +3,8 @@ import random
 import re
 
 from geopy import distance
+
+from city_info import CityInfo
 from city_locations import CityLocations
 
 
@@ -26,40 +28,11 @@ def get_wikipedia_page(city_name):
     2. Search all the cities on the wiki page.
     3. Create a list like ["Berlin, Germany", "Tokyo, Japan", "New York City, USA"]
      """
-    wikipedia_page = "Hallo23<<Tokyo//, Seoul##,<Vienna> Berlin}-!'Copenhagen Beijing?###"
+    wikipedia_page = "Hallo23<<Tokyo//, Germany, China <<Seoul?,<Vienna> Berlin!}-!'Copenhagen?###"
     return wikipedia_page
 
 
 
-def get_capitals_from_wikipedia_page(wikipedia_page):
-    """finds capitals on the wikipedia page and returns them in a list together with their country"""
-    locations = CityLocations.locations
-    # ["Berlin, Germany","Tokyo, Japan","New York City, USA"]
-    capitals_countries_list = [capital_country_pair[0] for capital_country_pair in locations]
-
-    capitals_list = [capital_country_pair.split(",")[0] for capital_country_pair in capitals_countries_list]
-    found_capitals_list = []
-    #replacing unwanted characters
-    wikipedia_page = re.sub("[<>,}.;/{=!?']", " ", wikipedia_page)
-    #appending found capitals to our list if they are surrounded by whitespace
-    found_capitals_list = [capital for capital in capitals_list if re.search('(^|\s)' + capital + '($|\s)', wikipedia_page)]
-
-    found_capitals_cities_list = [
-        capital_country
-        for capital_country in capitals_countries_list
-        if capital_country.split(",")[0] in set(found_capitals_list)]
-
-    #loop through capitals list and for every capital check whether it is in the capital_country_pair of our capitals_countries_list
-    #found_capitals_cities_list = []
-    #for capital in found_capitals_list:
-    #    for capital_country in capitals_countries_list:
-    #        if capital in capital_country:
-    #            found_capitals_cities_list.append(capital_country)
-
-    return found_capitals_cities_list
-
-    #lower case isn't checked. everything to lowercase?
-    #not all special characters are checked, e. g. "-" and "#" are left unchecked
 
 
 
@@ -131,7 +104,7 @@ def start_game():
         print(f"Distance to Target: {distance_to_target} km")
         print(f"Budget Remaining: ${budget}")
         print("******************************************")
-        links = get_capitals_from_wikipedia_page(get_wikipedia_page(current_location))
+        links = get_capitals_and_countries_from_wikipedia_page(get_wikipedia_page(current_location))
         # Block to get the User Choice.
         while True:
             try:
@@ -140,7 +113,7 @@ def start_game():
                     print(f"{i}. {link}")
                 choice = input("Enter choice or [empty text for more choices / 0 to quit.] ").strip()
                 if choice == "":
-                    links = get_capitals_from_wikipedia_page(get_wikipedia_page(current_location))
+                    links = get_capitals_and_countries_from_wikipedia_page(get_wikipedia_page(current_location))
                     continue  # empty text for more choices
                 if choice == "0":
                     break  # 0 to quit
@@ -179,7 +152,10 @@ def start_game():
             break
 
 
+def main():
+    print(get_capitals_and_countries_from_wikipedia_page(get_wikipedia_page("something")))
 
 
 if __name__ == "__main__":
-    start_game()
+    #start_game()
+    main()
