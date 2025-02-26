@@ -14,6 +14,8 @@ git clone https://github.com/AteetVatan/WikiSaver.git
 2. Install dependencies:
    ```bash
    pip install -r requirements.txt
+   pip install  openai
+   pip install google-generativeai
    ```
 3. Run the project:
    ```bash

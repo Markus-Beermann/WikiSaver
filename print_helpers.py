@@ -21,18 +21,17 @@ class PrintHelper:
         welcome_lines = [
             "                   __O           ",
             "                  / /\\_,         Welcome",
-            "                ___/\\             To",
-            "                    /_          Wikisaver",
-            "                                       __O",
-            "                                      / /\\_,        Welcome",
-            "                                    ___/\\             To",
-            "                                        /_          Wikisaver",
+            "                ___/\\                   To",
+            "                    /_                     Wikisaver",
+            "                                                       __O          ",
+            "                                                      / /\\_,        Welcome",
+            "                                                    ___/\\                  To",
+            "                                                        /_                    Wikisaver",
         ]
 
         welcome = "\n".join(
             f"{random.choice(cls.RAINBOW_COLORS)}{cls.WHITE}{cls.BOLD}{line}{cls.RESET}" for line in welcome_lines)
 
-        # Print the rainbow-colored ASCII art
         print(welcome)
 
     @classmethod

@@ -3,7 +3,9 @@ import random
 
 from capitals_and_countries import CapitalAndCountries
 from city_info import CityInfo
+from gemini_ai_helper import GeminiAIHelper
 from geo import Geo
+from open_ai_helper import OpenAIHelper
 from print_helpers import PrintHelper
 from wiki import Wiki
 
@@ -69,19 +71,24 @@ def start_game():
     #start_location = "Yamoussoukro, Ivory Coast"
     #start_location = "Fort-De-France, Martinique"
     #start_location = "Sarajevo, Bosnia And Herzegovina"
-    start_cords = get_travel_location_coordinates(start_location, country_data)
+    #start_cords = get_travel_location_coordinates(start_location, country_data)
 
     # test ends
 
     target_location, target_cords = get_random_travel_location(country_data)
+    # open_ai = OpenAIHelper()
+    # open_ai.active = False
+    # gemini_ai = GeminiAIHelper()
+    # if gemini_ai.active:
+    #     test = gemini_ai.get_wikipedia_links(target_location)
 
     # Ensuring Start location and End location should Not Be the same.
     while start_location == target_location:
         target_location, target_cords = get_random_travel_location(country_data)
 
-    print(f"Starting Location: {start_location}")
-    print(f"Target Destination: {target_location}")
-    print("Travel wisely within budget!")
+    PrintHelper.pr_menu(f"Starting Location: {start_location}")
+    PrintHelper.pr_menu(f"Target Destination: {target_location}")
+    PrintHelper.pr_menu("Travel wisely within budget!")
 
     # Initialize Budget, Locations and steps
     current_location = start_location
@@ -116,8 +123,12 @@ def start_game():
             try:
                 PrintHelper.pr_menu("\nAvailable Travel Links Choose a WIKI link by index (1,2,3....):")
                 for i, link in enumerate(links, start=1):  # Show all links
-                    print(f"{i}. {link}")
-                choice = PrintHelper.pr_input(f"Enter choice 1 to {len(links)} or [0 to quit.] ").strip()
+                    PrintHelper.pr_menu(f"{i}. {link}")
+                choice = PrintHelper.pr_input(f"Enter choice 1 to {len(links)} or [00 for AI hint.] [0 to quit.] ").strip()
+                if choice == "00":
+                    PrintHelper.pr_bold("AI hint coming soon.")
+                    continue
+
                 if choice == "0":
                     break  # 0 to quit
 
