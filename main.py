@@ -191,7 +191,7 @@ def game_ai(gemini_ai, target, initial_budget, budget):
     """Method for Game AI."""
     while True:
         for k, v in AI_HINT_DICT.items():
-            PrintHelper.pr_menu(f"{k}. {v["desc"]} Cost: ${v["cost_method"](initial_budget)}")
+            PrintHelper.pr_menu(f"{k}. {v['desc']} Cost: ${v['cost_method'](initial_budget)}")
 
         selected_ai_hint = None
         while True:
