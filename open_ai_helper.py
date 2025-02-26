@@ -30,10 +30,11 @@ class OpenAIHelper:
                     {"role": "system",
                      "content": "You are an AI assistant that finds Wikipedia references about world capitals."},
                     {"role": "user",
-                     "content": f"Find all Wikipedia pages with the mention of {target_capital}. Return a list of Wikipedia page URLs where {target_capital} is explicitly mentioned."}
+                     "content": f"Find all Wikipedia pages with the mention of {target_capital}. "
+                                f"Return a list of Wikipedia page URLs where {target_capital} is explicitly mentioned."
+                                f"Please provide the way only through capital cities."}
                 ]
             )
-
             return response["choices"][0]["message"]["content"].strip()
         except Exception as e:
             PrintHelper.pr_error(f"Error: Unable to retrieve Wikipedia references. {str(e)}")

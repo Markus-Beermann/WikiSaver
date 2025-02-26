@@ -5,9 +5,20 @@ from capitals_and_countries import CapitalAndCountries
 from city_info import CityInfo
 from gemini_ai_helper import GeminiAIHelper
 from geo import Geo
-from open_ai_helper import OpenAIHelper
 from print_helpers import PrintHelper
 from wiki import Wiki
+
+AI_HINT_DICT = {
+    1: {"desc": "Continent of the Target city (cost - 5% of initial budget).",
+          "query": "Give me the name of the continent for the city {key}.",
+          "cost_method": lambda x: x * 0.05},
+    2: {"desc": "Continent of the Target city + Language (cost - 10% of initial budget).",
+          "query": "Give me the name of the continent for the city {key} and the main language spoken.",
+          "cost_method": lambda x: x * 0.1},
+    3: {"desc": "max 3 Countries bordering the target country (cost - 15% of initial budget).",
+          "query": "Give me at least 3 countries bordering the country in which city {key} is located.",
+          "cost_method": lambda x: x * 0.15},
+}
 
 
 def get_random_travel_location(locations: list):
@@ -18,7 +29,7 @@ def get_travel_location_coordinates(city_name: str, locations: list):
     """Function to get the given location coordinates."""
     city_dict = dict(x for x in locations if x[0].lower() == city_name.lower())
 
-    #return city_dict[city_name]
+    # return city_dict[city_name]
     return list(city_dict.values())[0]
 
 
@@ -52,6 +63,11 @@ def get_capital_country_wiki_results(current_location, country_data):
     return links
 
 
+def get_gemini_ai_travel_advice(location, target):
+    """How we can use openAI for wikiSaver???. Ideas"""
+    pass
+
+
 def get_openai_travel_advice(location, target):
     """How we can use openAI for wikiSaver???. Ideas"""
     pass
@@ -68,19 +84,16 @@ def start_game():
     start_location, start_cords = get_random_travel_location(country_data)
 
     # test
-    #start_location = "Yamoussoukro, Ivory Coast"
-    #start_location = "Fort-De-France, Martinique"
-    #start_location = "Sarajevo, Bosnia And Herzegovina"
-    #start_cords = get_travel_location_coordinates(start_location, country_data)
+    # start_location = "Yamoussoukro, Ivory Coast"
+    # start_location = "Fort-De-France, Martinique"
+    # start_location = "Sarajevo, Bosnia And Herzegovina"
+    # start_cords = get_travel_location_coordinates(start_location, country_data)
 
     # test ends
 
     target_location, target_cords = get_random_travel_location(country_data)
     # open_ai = OpenAIHelper()
     # open_ai.active = False
-    # gemini_ai = GeminiAIHelper()
-    # if gemini_ai.active:
-    #     test = gemini_ai.get_wikipedia_links(target_location)
 
     # Ensuring Start location and End location should Not Be the same.
     while start_location == target_location:
@@ -97,6 +110,8 @@ def start_game():
 
     budget = None
     initial_budget = None
+
+    gemini_ai = GeminiAIHelper()
 
     while True:  # current_location !=target_location
         # Calculate distance to target
@@ -118,17 +133,21 @@ def start_game():
         PrintHelper.pr_menu(f"Budget Remaining: ${budget}")
         PrintHelper.print_seperator()
         links = get_capital_country_wiki_results(current_location, country_data)
+
         # Block to get the User Choice.
         while True:
             try:
                 PrintHelper.pr_menu("\nAvailable Travel Links Choose a WIKI link by index (1,2,3....):")
                 for i, link in enumerate(links, start=1):  # Show all links
                     PrintHelper.pr_menu(f"{i}. {link}")
-                choice = PrintHelper.pr_input(f"Enter choice 1 to {len(links)} or [00 for AI hint.] [0 to quit.] ").strip()
-                if choice == "00":
-                    PrintHelper.pr_bold("AI hint coming soon.")
-                    continue
 
+                ai_text = "[00 for AI hint.]" if gemini_ai.active else ""
+                choice = PrintHelper.pr_input(
+                    f"Enter choice 1 to {len(links)} or {ai_text} [0 to quit.] ").strip()
+
+                if gemini_ai.active and choice == "00":
+                    budget = game_ai(gemini_ai, target_location, initial_budget=initial_budget, budget=budget)
+                    continue
                 if choice == "0":
                     break  # 0 to quit
 
@@ -142,6 +161,7 @@ def start_game():
             break  # 0 to quit
 
         next_location = links[choice - 1]
+
         # Now calculate the travel cost
         # Get current location coordinates
         next_loc_cords = get_travel_location_coordinates(next_location, country_data)
@@ -164,6 +184,49 @@ def start_game():
             PrintHelper.pr_menu(f"You spent just: ${initial_budget - budget}")
             PrintHelper.pr_menu(f"You reached {target_location} in {steps} steps.")
             break
+
+
+
+def game_ai(gemini_ai, target, initial_budget, budget):
+    """Method for Game AI."""
+    while True:
+        for k, v in AI_HINT_DICT.items():
+            PrintHelper.pr_menu(f"{k}. {v["desc"]} Cost: ${v["cost_method"](initial_budget)}")
+
+        selected_ai_hint = None
+        while True:
+            try:
+                ai_choice = int(PrintHelper.pr_input(
+                    f"Enter choice for AI hint or 0 to Exit:").strip())
+
+                if ai_choice == 0:
+                    break
+                if not 1 <= ai_choice <= len(AI_HINT_DICT):
+                    raise ValueError
+
+                selected_ai_hint = AI_HINT_DICT[ai_choice]
+                cost = selected_ai_hint["cost_method"](initial_budget)
+                if cost > budget:
+                    PrintHelper.pr_error(f"You just have ${budget} and for AI hint ${cost} is required.")
+                    continue
+
+                break
+            except ValueError:
+                PrintHelper.pr_error(f"Please enter valid number from 1 to {len(AI_HINT_DICT)}")
+        if ai_choice == 0:
+            break
+        if selected_ai_hint is not None:
+            if "," in target:
+                target = target.split(",")[0].strip()
+
+            query = selected_ai_hint["query"].format(key=target)
+            result = gemini_ai.get_gemini_query_result(query)
+            PrintHelper.pr_bold(result)
+            cost = selected_ai_hint["cost_method"](initial_budget)
+            budget = budget - cost
+            PrintHelper.pr_menu(f"Your remaining Budget is ${budget}.")
+
+    return budget
 
 
 if __name__ == "__main__":

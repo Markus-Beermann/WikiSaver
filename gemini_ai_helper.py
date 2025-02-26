@@ -31,18 +31,36 @@ class GeminiAIHelper:
     def active(self, val):
         self.__active = val
 
-
-    def get_wikipedia_links(self, target_capital):
+    def get_gemini_query_result(self, query):
         """Method to find Wikipedia pages that list world capitals and checks if they mention the target capital."""
         try:
             if not self.active:
                 return None
-            if "," in target_capital:
-                target_capital = target_capital.split(",")[0].strip()
+
+            prompt = (query)
+            response = self.__genai_model.generate_content(prompt)
+            return response.text.strip()
+
+        except Exception as e:
+            PrintHelper.pr_error(f"Unable to retrieve Wikipedia references. {str(e)}")
+
+
+
+    def get_wikipedia_links(self, source ,target):
+        """Method to find Wikipedia pages that list world capitals and checks if they mention the target capital."""
+        try:
+            if not self.active:
+                return None
+            if "," in source:
+                source = source.split(",")[0].strip()
+            if "," in target:
+                target = target.split(",")[0].strip()
+
 
             prompt = (
-                f"Find all Wikipedia pages that list world capitals and check which of them mention {target_capital}. "
-                f"Return a list of Wikipedia page URLs where {target_capital} is explicitly mentioned in the context of capitals or related geopolitical topics."
+                "You are a travel guide helping users navigate between global locations."
+                f"I am in {source}. My goal is to reach {target}. What is the best way to travel next?"
+                "Please provide the way only through the capital cities."
             )
             response = self.__genai_model.generate_content(prompt)
             return response.text.strip()
