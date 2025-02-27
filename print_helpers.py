@@ -26,7 +26,7 @@ class PrintHelper:
             "                                                       __O          ",
             "                                                      / /\\_,        Welcome",
             "                                                    ___/\\                  To",
-            "                                                        /_                    Wikisaver",
+            "                                                        /_                    Wikisaver"
         ]
 
         welcome = "\n".join(
@@ -35,14 +35,61 @@ class PrintHelper:
         print(welcome)
 
     @classmethod
+    def print_winner(cls):
+        """Method to print a winner message."""
+        winner_lines = [
+            "You are a Champion.",
+            "   __O  o_.-._   ",
+            "   / /\_,|_.-._| ",
+            " ___/\   |",
+            "     /_  |"
+        ]
+        winner = "\n".join(
+            f"{random.choice(cls.RAINBOW_COLORS)}{cls.WHITE}{cls.BOLD}{line}{cls.RESET}" for line in winner_lines)
+
+        print(winner)
+
+    @classmethod
+    def print_loser(cls):
+        """Method to print a Lost message."""
+        lost_lines = [
+            "You Lost the Game.",
+            "     .-'''-.      ",
+            "    /(.) (.)\     ",
+            "    ;   O   ;     ",
+            "    \ }---{ /     ",
+            "     '-...-'      "
+        ]
+        lost = "\n".join(
+            f"{random.choice(cls.RAINBOW_COLORS)}{cls.WHITE}{cls.BOLD}{line}{cls.RESET}" for line in lost_lines)
+
+        print(lost)
+
+    @classmethod
     def print_seperator(cls):
-        sep =  "\t\t\t\t\t\t\t\t\t\t\t"
-        print( f"{random.choice(cls.RAINBOW_COLORS)}{sep}{cls.RESET}")
+        sep = "\t\t\t\t\t\t\t\t\t\t\t"
+        print(f"{random.choice(cls.RAINBOW_COLORS)}{sep}{cls.RESET}")
 
     @classmethod
     def pr_menu(cls, txt):
         """Prints the Menu items in teal color."""
         print("\033[38;5;37m" + txt + "\033[0m")
+
+    @classmethod
+    def pr_menu_headers(cls, txt):
+        """Prints the Menu items in teal color."""
+        txt ="\033[1m" + txt + "\033[0m"
+        print("\033[38;5;37m" + txt + "\033[0m")
+
+    @classmethod
+    def pr_menu_option_1(cls, txt):
+        """Prints the Menu items in teal color."""
+        print("\033[38;5;45m" + txt + "\033[0m")
+
+    @classmethod
+    def pr_menu_option_2(cls, txt1, txt2):
+        """Prints the Menu items in teal color."""
+        print("\033[38;5;37m" + txt1 + "\033[0m" + " " + "\033[91m" + txt2 + "\033[0m")
 
     @classmethod
     def pr_error(cls, txt):
@@ -53,7 +100,6 @@ class PrintHelper:
     def pr_bold(cls, txt):
         """Prints text in bold"""
         print("\033[1m" + txt + "\033[0m")
-
 
     @classmethod
     def pr_input(cls, txt):
