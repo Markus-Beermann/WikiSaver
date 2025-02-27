@@ -174,8 +174,6 @@ def start_game():
                     else:
                         PrintHelper.pr_menu(f"{i}. {link} cost:${travel_cost_dict[link]}")
 
-
-
                 ai_text = "[00 for AI hint.]" if gemini_ai.active else ""
                 choice = PrintHelper.pr_input(
                     f"Enter choice 1 to {len(links)} or {ai_text} [0 to quit.] ").strip()
@@ -226,7 +224,7 @@ def start_game():
 def game_ai(gemini_ai, target, initial_budget, budget):
     """Method for Game AI."""
     print("\n")
-    PrintHelper.pr_menu_headers("***********Welcome I am WIKISAVER AI model gemini-2.0-flash.***********")
+    PrintHelper.pr_menu_headers("***********Welcome I am Globetrotters AI model gemini-2.0-flash.***********")
     PrintHelper.pr_menu("Hmm How can i help? , Please choose one option.")
     print("\n")
     while True:
@@ -263,7 +261,7 @@ def game_ai(gemini_ai, target, initial_budget, budget):
             PrintHelper.pr_bold(result)
             cost = selected_ai_hint["cost_method"](initial_budget)
             budget = budget - cost
-            PrintHelper.pr_menu(f"Your remaining Budget is ${budget}.")
+            PrintHelper.pr_menu_headers(f"Your remaining Budget is ${budget}.")
 
     return budget
 

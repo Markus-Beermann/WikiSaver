@@ -22,11 +22,11 @@ class PrintHelper:
             "                   __O           ",
             "                  / /\\_,         Welcome",
             "                ___/\\                   To",
-            "                    /_                     Wikisaver",
+            "                    /_                     Globetrotters",
             "                                                       __O          ",
             "                                                      / /\\_,        Welcome",
             "                                                    ___/\\                  To",
-            "                                                        /_                    Wikisaver"
+            "                                                        /_                    Globetrotters"
         ]
 
         welcome = "\n".join(
