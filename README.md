@@ -1,4 +1,4 @@
-# WikiSaver
+# Globetrotters - WIKISavers
 
 # Hackathon Project
 By Hackathon Team—1
