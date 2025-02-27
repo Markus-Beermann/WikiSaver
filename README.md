@@ -40,4 +40,7 @@ git clone https://github.com/AteetVatan/WikiSaver.git
 - 
 ## Dependencies
 - `geopy` - For distance calculations.
-
+- `geonamescache` - For geo locations.
+- `wikipedia` - For wikipedia pages.
+- `openai` - OpenAI LLM.
+- `google-generativeai` - Gemeni LLM.
