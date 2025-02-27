@@ -1,4 +1,5 @@
 # Globetrotters - WIKISavers
+![image](https://github.com/user-attachments/assets/689e8e3e-a04f-43d4-be0f-ebd94ad16c98)
 
 # Hackathon Project
 By Hackathon Team—1
